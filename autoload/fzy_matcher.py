@@ -1,7 +1,8 @@
-import os
-import sys
 import vim
 from subprocess import Popen, PIPE
+
+
+ENCODING = 'utf-8'
 
 
 def ctrlp_fzy_match():
@@ -10,20 +11,16 @@ def ctrlp_fzy_match():
     candidates = vim.eval('a:items')
     limit      = int(vim.eval('a:limit'))
 
-    fzy_cmd = [fzy_bin, f'--show-matches={query}', f'--num-of-matches={limit}']
-
     fzy_process = Popen(
-        fzy_cmd,
+        [fzy_bin, f'--show-matches={query}', f'--num-of-matches={limit}'],
         stdin=PIPE,
-        stdout=PIPE,
-        text=True,
-        encoding='utf-8'
+        stdout=PIPE
     )
 
     fzy_process.stdin.flush()
-    fzy_process.stdin.writelines('\n'.join(candidates))
-    fzy_process.stdin.close()
+    fzy_process.stdin.write(bytes('\n'.join(candidates), ENCODING))
 
-    result = [ line.rstrip() for line in fzy_process.stdout ]
+    output = fzy_process.communicate()[0]
+    result = output.decode(ENCODING).rstrip().split("\n")
 
     return result
