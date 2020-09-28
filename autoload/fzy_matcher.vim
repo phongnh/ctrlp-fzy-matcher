@@ -3,6 +3,9 @@ if !has('python3')
     finish
 endif
 
+let s:root_dir = escape(expand('<sfile>:p:h'), '\')
+unsilent execute 'py3file ' . s:root_dir . '/fzy_matcher.py'
+
 function! s:hide_current_file(ispath, crfile) abort
     return a:ispath && !get(g:, 'ctrlp_match_current_file', 0) && getftype(a:crfile) == 'file'
 endfunction
@@ -10,11 +13,10 @@ endfunction
 function! fzy_matcher#match(items, str, limit, mmode, ispath, crfile, regex) abort
     call clearmatches()
 
+    let s:candidates = a:items[0:a:limit]
+
     if s:hide_current_file(a:path, a:crfile)
-        let s:candidates = a:items[0:a:limit]
         call remove(s:candidates, index(s:candidates, a:crfile))
-    else
-        let s:candidates = a:items
     endif
 
     if empty(a:str)
