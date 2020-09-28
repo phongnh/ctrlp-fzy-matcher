@@ -13,21 +13,19 @@ endfunction
 function! fzy_matcher#match(items, str, limit, mmode, ispath, crfile, regex) abort
     call clearmatches()
 
-    let s:candidates = a:items[0:a:limit]
+    if empty(a:str)
+        let result = a:items[0:(a:limit)]
+    else
+        call matchadd('CtrlPMatch',
+                    \ '\v' . substitute(a:str, '.', '\0[^\0]{-}', 'g')[:-8])
+        call matchadd('CtrlPLinePre', '^>')
+
+        let result = py3eval('ctrlp_fzy_match()')
+    endif
 
     if s:hide_current_file(a:path, a:crfile)
-        call remove(s:candidates, index(s:candidates, a:crfile))
+        call remove(result, index(result, a:crfile))
     endif
-
-    if empty(a:str)
-        return s:candidates
-    endif
-
-    call matchadd('CtrlPMatch',
-                \ '\v' . substitute(a:str, '.', '\0[^\0]{-}', 'g')[:-8])
-    call matchadd('CtrlPLinePre', '^>')
-
-    let result = py3eval('ctrlp_fzy_match()')
 
     return result
 endfunction
