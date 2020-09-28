@@ -18,8 +18,8 @@ function! fzy_matcher#match(items, str, limit, mmode, ispath, crfile, regex) abo
     if empty(a:str)
         let result = a:items[0:(a:limit)]
     else
-        " call matchadd('CtrlPMatch',
-        "             \ '\v' . substitute(a:str, '.', '\0[^\0]{-}', 'g')[:-8])
+        call matchadd('CtrlPMatch',
+                    \ '\v' . substitute(a:str, '.', '\0[^\0]{-}', 'g')[:-8])
         call matchadd('CtrlPLinePre', '^>')
 
         let result = py3eval('ctrlp_fzy_match()')
