@@ -6,7 +6,8 @@ endif
 let s:root_dir = escape(expand('<sfile>:p:h'), '\')
 unsilent execute 'py3file ' . s:root_dir . '/fzy_matcher.py'
 
-let s:fzy_bin = get(g:, 'ctrlp_fzy_matcher_bin', 'fzy')
+let s:use_custom_fzy = get(g:, 'fzy_matcher_use_custom_fzy', 0)
+let s:use_with_head  = executable('head')
 
 function! s:hide_current_file(ispath, crfile) abort
     return a:ispath && !get(g:, 'ctrlp_match_current_file', 0) && getftype(a:crfile) == 'file'
