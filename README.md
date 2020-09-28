@@ -25,8 +25,9 @@ Use vim plugin manager
     NeoBundle 'phongnh/ctrlp-fzy-matcher'
     :NeoBundleInstall
 
+
 ## Configuration
 
-```vimrc
+```vim
 let g:ctrlp_match_func = { 'match': 'fzy_matcher#match' }
 ```
