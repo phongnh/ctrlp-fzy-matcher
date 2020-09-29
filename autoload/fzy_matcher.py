@@ -10,13 +10,13 @@ def ctrlp_fzy_match():
     candidates = vim.eval('a:items')
     limit      = int(vim.eval('a:limit'))
 
-    use_custom_fzy = int(vim.eval('s:use_custom_fzy'))
-    use_with_head  = int(vim.eval('s:use_with_head'))
+    is_custom_fzy = int(vim.eval('s:is_custom_fzy'))
+    has_head      = int(vim.eval('s:has_head'))
 
-    if use_custom_fzy == 1:
+    if is_custom_fzy == 1:
         return run_fzy(query, candidates, limit, True)
 
-    if use_with_head == 1:
+    if has_head == 1:
         return run_fzy_with_head(query, candidates, limit)
 
     return run_fzy(query, candidates, limit, False)
