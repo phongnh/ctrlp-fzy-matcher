@@ -6,12 +6,12 @@ ENCODING = 'utf-8'
 
 
 def ctrlp_fzy_match():
-    query      = vim.eval('a:str')
+    query = vim.eval('a:str')
     candidates = vim.eval('a:items')
-    limit      = int(vim.eval('a:limit'))
+    limit = int(vim.eval('a:limit'))
 
     is_custom_fzy = int(vim.eval('s:is_custom_fzy'))
-    has_head      = int(vim.eval('s:has_head'))
+    has_head = int(vim.eval('s:has_head'))
 
     if is_custom_fzy == 1:
         return run_fzy(query, candidates, limit, True)
@@ -20,6 +20,10 @@ def ctrlp_fzy_match():
         return run_fzy_with_head(query, candidates, limit)
 
     return run_fzy(query, candidates, limit, False)
+
+
+def is_like_empty_result(result):
+    return len(result) == 1 and result[0] == ''
 
 
 def run_fzy(query, candidates, limit, custom=False):
@@ -43,6 +47,9 @@ def run_fzy(query, candidates, limit, custom=False):
     if custom is False:
         result = result[0:limit]
 
+    if is_like_empty_result(result):
+        result = []
+
     return result
 
 
@@ -63,6 +70,9 @@ def run_fzy_with_head(query, candidates, limit):
         stdout=PIPE
     )
 
-    result = [ line.decode(ENCODING).rstrip() for line in head_process.stdout ]
+    result = [line.decode(ENCODING).rstrip() for line in head_process.stdout]
+
+    if is_like_empty_result(result):
+        result = []
 
     return result
