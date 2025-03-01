@@ -1,8 +1,9 @@
 ctrlp-fzy-matcher
 =================
 
-CtrlP matcher based on [fzy](https://github.com/jhawthorn/fzy)
+Deprecated in the favor of https://github.com/phongnh/ctrlp-matchers.vim.
 
+CtrlP matcher based on [fzy](https://github.com/jhawthorn/fzy).
 
 ## Installation
 
